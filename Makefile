@@ -30,36 +30,36 @@ analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_MASS.csv $(FIGS) $(TABS)
 
 # Transform output files to HDF5
 tmp_data/data.h5:  $(foreach ensemble, $(ENSEMBLES), $(wildcard output_file/$(ensemble)/chimera_out_*)) | $(VENV)
-	$(PYTHON) generate/transform_h5.py; \
+	$(PYTHON) generate/transform_h5.py;
 
 # Analyze mesons in FUND. rep.
 $(F_DATA): metadata/F_meson_meta.csv | $(VENV)
-	$(PYTHON) analysis/analysis_F.py; \
+	$(PYTHON) analysis/analysis_F.py;
 
 # Analyze mesons in ANTI. rep.
 $(AS_DATA): metadata/AS_meson_meta.csv | $(VENV)
-	$(PYTHON) analysis/analysis_AS.py; \
+	$(PYTHON) analysis/analysis_AS.py;
 
 # Analyze Chimera baryons
 $(CB_DATA): metadata/CB_mass_meta.csv | $(VENV)
-	$(PYTHON) analysis/analysis_CB.py; \
+	$(PYTHON) analysis/analysis_CB.py;
 
 # Analyze optimal fitting procedures
 CSVs/FIT_mass.csv: $(ALL_SPECTRUM) | $(VENV)
-	$(PYTHON) analysis/analysis_AIC.py; \
+	$(PYTHON) analysis/analysis_AIC.py;
 
 # Analyze cross-check fitting procedures
 CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv: $(ALL_SPECTRUM) | $(VENV)
-	$(PYTHON) analysis/analysis_cross.py; \
+	$(PYTHON) analysis/analysis_cross.py;
 
 # Generate figures
 $(FIGS): $(ALL_SPECTRUM) CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv | $(VENV)
-	$(PYTHON) generate/plot_figs.py; \
+	$(PYTHON) generate/plot_figs.py;
 
 
 # Generate tables
 $(TABS): CSVs/F_meson.csv CSVs/AS_meson.csv CSVs/CB_mass.csv CSVs/FIT_MASS.csv CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv | $(VENV)
-	$(PYTHON) generate/print_tabs.py; \
+	$(PYTHON) generate/print_tabs.py;
 
 # Clean target
 clean:
