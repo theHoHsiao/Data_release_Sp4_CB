@@ -29,7 +29,7 @@ analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_MASS.csv $(FIGS) $(TABS)
 
 
 # Transform output files to HDF5
-tmp_data/data.h5:  $(foreach ensemble, $(ENSEMBLES), $(wildcard output_file/$(ensemble)/chimera_out_*)) | $(VENV)
+tmp_data/data.h5:  $(foreach ensemble, $(ENSEMBLES), $(wildcard raw_data/$(ensemble)/chimera_out_*)) | $(VENV)
 	$(PYTHON) generate/transform_h5.py;
 
 # Analyze mesons in FUND. rep.

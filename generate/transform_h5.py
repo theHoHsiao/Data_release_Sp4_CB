@@ -174,7 +174,7 @@ def main():
         group_cb = f.create_group("chimera")
 
         for ens in ENS:
-            path = "raw_data/" + ens + "/chimera_out_*"
+            path = "tmp_data/" + ens + "/chimera_out_*"
 
             filenames = glob.glob(path)
 
