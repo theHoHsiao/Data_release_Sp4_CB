@@ -168,7 +168,7 @@ def main():
         "60x48x48x48b8.2",
     ]  #
 
-    with h5py.File("data.h5", "w") as f:
+    with h5py.File("raw_data/data.h5", "w") as f:
         group_f = f.create_group("meson_fund")
         group_as = f.create_group("meson_anti")
         group_cb = f.create_group("chimera")
