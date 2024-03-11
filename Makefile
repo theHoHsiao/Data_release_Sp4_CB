@@ -25,7 +25,7 @@ $(VENV): requirements.txt
 	./venv/bin/pip install -r requirements.txt
 
 # Target to analyze data
-analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_MASS.csv $(FIGS) $(TABS)
+analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_mass.csv $(FIGS) $(TABS)
 
 
 # Transform output files to HDF5
@@ -58,7 +58,7 @@ $(FIGS): $(ALL_SPECTRUM) CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv | $(VE
 
 
 # Generate tables
-$(TABS): CSVs/F_meson.csv CSVs/AS_meson.csv CSVs/CB_mass.csv CSVs/FIT_MASS.csv CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv | $(VENV)
+$(TABS): CSVs/F_meson.csv CSVs/AS_meson.csv CSVs/CB_mass.csv CSVs/FIT_mass.csv CSVs/FIT_cross_fixAS.csv CSVs/FIT_cross_fixF.csv | $(VENV)
 	$(PYTHON) generate/print_tabs.py;
 
 # Clean target
