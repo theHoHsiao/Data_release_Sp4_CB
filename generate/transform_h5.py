@@ -168,13 +168,13 @@ def main():
         "60x48x48x48b8.2",
     ]  #
 
-    with h5py.File("raw_data/data.h5", "w") as f:
+    with h5py.File("tmp_data/data.h5", "w") as f:
         group_f = f.create_group("meson_fund")
         group_as = f.create_group("meson_anti")
         group_cb = f.create_group("chimera")
 
         for ens in ENS:
-            path = "tmp_data/" + ens + "/chimera_out_*"
+            path = "raw_data/" + ens + "/chimera_out_*"
 
             filenames = glob.glob(path)
 
