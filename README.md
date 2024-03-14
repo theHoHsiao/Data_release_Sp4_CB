@@ -3,7 +3,7 @@
 This repository contains the code used to prepare the plots and results included in [Lattice investigations of the chimera baryon spectrum in the Sp(4) gauge theory[2311.14663]](https://arxiv.org/abs/2311.14663).
 
 ## Requirements
-- Python 3.8 (see `requirements.txt` for the required packages)
+- Python 3.9 (see `requirements.txt` for the required packages)
 
 ## Instructions: Running the analysis
 - Install required dependencies (see below).
