@@ -74,5 +74,7 @@ clean:
 	rm -rf __pycache__
 	rm -rf Lib/__pycache__
 	rm -rf venv
-	rm tmp_data/*.npy
-	rm CSVs/*.csv
+	rm -rf tabs
+	rm -rf figs
+	rm tmp_data/MASS_PS_F.npy tmp_data/MASS_PS_AS.npy tmp_data/MASS_chimera.npy
+	rm CSVs/F_meson.csv CSVs/AS_meson.csv CSVs/CB_mass.csv
