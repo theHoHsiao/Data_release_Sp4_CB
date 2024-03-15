@@ -6,11 +6,11 @@ This repository contains the code used to prepare the plots and results included
 - Python 3.11 (see `requirements.txt` for the required packages)
 
 ## Instructions: Running the analysis
-- Install required dependencies (see below).
+
 - Download the "raw data" from Zenodo and place them in `raw_data/`. `/generate/transform_h5.py` reads the log files and save them to one hdf5-file.
 - Alternatively, download the hdf5-file, "data.h5", from Zenodo and place it in `tmp_data/`.
 - Download the "metadata" from Zenodo and place in `metadata/`.
-- Make
+- `make` (when running on a HPC without internet access, do `make venv`)
 - Analysis results are saved to `CSVs/`.
 - Figures and Tables can be found in
     - `fis/`
