@@ -1,3 +1,7 @@
+# Stop processes from thrashing
+OMP_NUM_THREADS := 1
+export OMP_NUM_THREADS
+
 # Define variables
 PYTHON := venv/bin/python3
 VENV := venv/bin/activate
@@ -13,16 +17,20 @@ FIGS := $(foreach fig, $(FIG_NAMES), figs/$(fig))
 TABS := $(foreach tab, 1 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19, tabs/table_$(tab).tex)
 
 # Phony targets
-.PHONY: all setup run clean analyze_data
+.PHONY: venv all clean analyze_data
+
 
 # Default target
 all: analyze_data clean
 
 # Virtual environment setup
+
 $(VENV): requirements.txt
 	python3 -m venv venv
 	$(PYTHON) -m pip install --upgrade pip
 	./venv/bin/pip install -r requirements.txt
+
+venv: $(VENV)
 
 # Target to analyze data
 analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_mass.csv $(FIGS) $(TABS)
@@ -66,3 +74,5 @@ clean:
 	rm -rf __pycache__
 	rm -rf Lib/__pycache__
 	rm -rf venv
+	rm tmp_data/*.npy
+	rm CSVs/*.csv
