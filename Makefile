@@ -19,7 +19,6 @@ TABS := $(foreach tab, 1 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19, tabs/table_$
 # Phony targets
 .PHONY: venv all clean analyze_data
 
-
 # Default target
 all: analyze_data clean
 
@@ -34,7 +33,6 @@ venv: $(VENV)
 
 # Target to analyze data
 analyze_data: tmp_data/data.h5 $(ALL_SPECTRUM) CSVs/FIT_mass.csv $(FIGS) $(TABS)
-
 
 # Transform output files to HDF5
 tmp_data/data.h5:  $(foreach ensemble, $(ENSEMBLES), $(wildcard raw_data/$(ensemble)/chimera_out_*)) | $(VENV)
