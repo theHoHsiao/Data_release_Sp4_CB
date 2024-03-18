@@ -17,10 +17,10 @@ FIGS := $(foreach fig, $(FIG_NAMES), figs/$(fig))
 TABS := $(foreach tab, 1 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19, tabs/table_$(tab).tex)
 
 # Phony targets
-.PHONY: venv all clean analyze_data
+.PHONY: venv all clean analyze_data purge
 
 # Default target
-all: analyze_data
+all: analyze_data clean
 
 # Virtual environment setup
 
@@ -69,6 +69,12 @@ $(TABS): CSVs/F_meson.csv CSVs/AS_meson.csv CSVs/CB_mass.csv CSVs/FIT_mass.csv C
 
 # Clean target
 clean:
+	rm -rf __pycache__
+	rm -rf Lib/__pycache__
+	rm -rf venv
+	rm tmp_data/MASS_PS_F.npy tmp_data/MASS_PS_AS.npy tmp_data/MASS_chimera.npy
+
+purge:
 	rm -rf __pycache__
 	rm -rf Lib/__pycache__
 	rm -rf venv
