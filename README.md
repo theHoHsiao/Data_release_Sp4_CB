@@ -15,4 +15,4 @@ This repository contains the code used to prepare the plots and results included
 - Figures and Tables can be found in
     - `fis/`
     - `tabs/`
-- WARNING: `/analysis/analysis_AIC.py` requires some amount of computation resource (~15 hours with 40 CPUs). To skip this step, download the 'FIT_mass.csv' and place it in `CSVs/`.
+- WARNING: `/analysis/analysis_AIC.py` requires some amount of computation resource. To skip this step, download the 'FIT_mass.csv' and place it in `CSVs/`.
