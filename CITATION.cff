@@ -1,0 +1,67 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Lattice investigations of the chimera baryon spectrum in
+  the Sp(4) gauge theory---Analysis code
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Ho
+    family-names: Hsiao
+    email: thepaulxiao.sc09@nycu.edu.tw
+    affiliation: National Yang Ming Chiao Tung University
+    orcid: 'https://orcid.org/0000-0002-8522-5190'
+  - given-names: Ed
+    family-names: Bennett
+    email: e.j.bennett@swansea.ac.uk
+    affiliation: Swansea University
+    orcid: 'https://orcid.org/0000-0002-8522-5190'
+  - given-names: Deog Ki
+    family-names: Hong
+    orcid: 'https://orcid.org/0000-0002-3923-4184'
+    affiliation: Pusan National University
+    email: dkhong@pusan.ac.kr
+  - given-names: Jong-Wan
+    family-names: Lee
+    email: j.w.lee@ibs.re.kr
+    affiliation: >-
+      Institute for Basic Science (IBS) and Pusan National
+      University
+    orcid: 'https://orcid.org/0000-0002-4616-2422'
+  - given-names: C.-J. David
+    family-names: Lin
+    orcid: 'https://orcid.org/0000-0003-3743-0840'
+    affiliation: National Yang Ming Chiao Tung University
+    email: dlin@nycu.edu.tw
+  - given-names: Biagio
+    family-names: Lucini
+    email: b.lucini@swansea.ac.uk
+    affiliation: Swansea University
+    orcid: 'https://orcid.org/0000-0001-8974-8266'
+  - given-names: Maurizio
+    family-names: Piai
+    email: m.piai@swansea.ac.uk
+    affiliation: Swansea University
+    orcid: 'https://orcid.org/0000-0002-2251-0111'
+  - given-names: David
+    family-names: Vadacchino
+    email: davide.vadacchino@plymouth.ac.uk
+    affiliation: University of Plymouth
+    orcid: 'https://orcid.org/0000-0002-5783-5602'
+repository-code: 'https://github.com/theHoHsiao/Data_release_Sp4_CB'
+abstract: >-
+  This repository contains the code used to prepare the
+  plots and results
+
+  included in
+
+  Lattice investigations of the chimera baryon spectrum in
+  the Sp(4) gauge theory [2311.14663].
+
+  It makes use of data from the corresponding data release
+  on Zenodo (https://doi.org/10.5281/zenodo.10819721).
+license: GPL-3.0-or-later
