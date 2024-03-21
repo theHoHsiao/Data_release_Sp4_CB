@@ -557,17 +557,17 @@ def baryon_MF4(X1, X2, LAT_A, Y):
         (M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4) = pars
 
         V = Y[:, N] - func(
-                (X1[:, N], X2[:, N], LAT_A[:, N]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                F4,
-            )
+            (X1[:, N], X2[:, N], LAT_A[:, N]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            F4,
+        )
         V = np.mat(V)
 
         return V * M_I * V.T

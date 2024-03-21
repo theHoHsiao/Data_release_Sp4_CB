@@ -23,6 +23,7 @@ def random_index():
 index_list = random_index()
 np.random.seed(random.randint(0, 2**32 - 1))
 
+
 def bootstrap_main(C):
     binS = []
     num_confs = len(C[:, 0])

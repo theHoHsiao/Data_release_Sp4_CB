@@ -30,15 +30,15 @@ def LB_channel(ch):
         "SigmaS": r"$\Sigma^\ast_{\rm CB}$",
     }.get(ch, ch)
 
-def print_abv(v):
 
+def print_abv(v):
     if v > 0.005:
-        return str(round(v,2))
+        return str(round(v, 2))
 
     else:
         tmp = "%e" % v
-        dig = tmp.split('e')[1]
-        return r'$\sim 10^{'+dig+'}$'
+        dig = tmp.split("e")[1]
+        return r"$\sim 10^{" + dig + "}$"
 
 
 def get_AIC(ch):
@@ -159,7 +159,6 @@ def tab_1():
 def tab_4_7():
     f = open("tabs/table_4.tex", "w")
 
-
     f.write("& \\multicolumn{5}{c|}{$\\Lambda_{\\rm CB}$}   \\\\ \n")
     f.write(
         "Ansatz&  $\\hat{m}_{\\rm PS,cut}$ &  $\\hat{m}_{\\rm ps,cut}$ & $\\chi^2/N_{\\rm d.o.f.}$ &  AIC & $W$ \\\\ \hline \n"
@@ -187,7 +186,7 @@ def tab_4_7():
     f.write(
         "Ansatz & $\\hat{m}_{\\rm PS,cut}$ &  $\\hat{m}_{\\rm ps,cut}$  & $\\chi^2/N_{\\rm d.o.f.}$ &  AIC & $W$ \\\\ \n\hline \n"
     )
-    
+
     string_tmp, w_sigs = get_AIC("SigmaS")
     for i in range(len(string_tmp)):
         f.write(string_tmp[i] + "  \\\\ \n")
@@ -218,12 +217,11 @@ def tab_4_7():
         par_tmp = FIT_mass[opt].values[0][6:]
         for p in range(8):
             tmp_tab += " & " + print_non_zero(par_tmp[2 * p], par_tmp[2 * p + 1])
-            
-        if ind[ch][0] ==1:
+
+        if ind[ch][0] == 1:
             tmp_tab += " & -"
         else:
             tmp_tab += " & " + print_non_zero(par_tmp[20], par_tmp[21])
-            
 
         f.write(tmp_tab + "\n")
         tab_7.append(tmp_tab)
@@ -468,9 +466,9 @@ def print_meta_CB(ENS, f):
 
 
 def main():
-    if os.path.isdir('tabs') == False:
-        os.mkdir('tabs')
-        
+    if os.path.isdir("tabs") == False:
+        os.mkdir("tabs")
+
     ################################# Global var. and loading files ################################
     global FIT_mass, m_PS_cut, m_ps_cut, Ndata, n_2D, ansatz, CB_mass, AS_meson, F_meson
 
@@ -553,6 +551,6 @@ def main():
 
         f.close()
 
+
 if __name__ == "__main__":
     main()
-

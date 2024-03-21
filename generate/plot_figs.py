@@ -81,9 +81,9 @@ def get_AIC(ch):
 
 
 def main():
-    if os.path.isdir('figs') == False:
-        os.mkdir('figs')
-    
+    if os.path.isdir("figs") == False:
+        os.mkdir("figs")
+
     ################################# Global var. and loading files ################################
     global raw_data, FIT_mass, m_PS_cut, m_ps_cut, n_2D, Ndata
 
@@ -114,7 +114,12 @@ def main():
                 )[0]
             )
             legend_handles[-1].set_label(f"${beta}$")
-        fig.legend(handles=legend_handles, loc="outside upper center", ncols=5, title=r"$\beta$")
+        fig.legend(
+            handles=legend_handles,
+            loc="outside upper center",
+            ncols=5,
+            title=r"$\beta$",
+        )
 
     f_bare_mass = CB_mass.f_bare_mass.values
     as_bare_mass = CB_mass.as_bare_mass.values
@@ -204,13 +209,28 @@ def main():
     C_og = bootstrap.Correlator_resample(corr_e - corr_o)
 
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Lambda_{\rm CB}}$", marker="+",
+        C_Ebin,
+        0,
+        24,
+        1,
+        r"$am^{+}_{\rm eff,\Lambda_{\rm CB}}$",
+        marker="+",
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Obin, 0, 17, 1, r"$am^{-}_{\rm eff,\Lambda_{\rm CB}}$", marker="x",
+        C_Obin,
+        0,
+        17,
+        1,
+        r"$am^{-}_{\rm eff,\Lambda_{\rm CB}}$",
+        marker="x",
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_og, 0, 24, 1, r"$am_{\rm eff,\Lambda_{\rm CB}}$", marker=markers["OC"],
+        C_og,
+        0,
+        24,
+        1,
+        r"$am_{\rm eff,\Lambda_{\rm CB}}$",
+        marker=markers["OC"],
     )
 
     plt.ylim(0.6, 1.6)
@@ -229,20 +249,35 @@ def main():
         "48x24x24x24b7.62", "-0.77", "-1.1", "source_N100_sink_N0", "OV12"
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma_{\rm CB}}$", marker=">",
+        C_Ebin,
+        0,
+        24,
+        1,
+        r"$am^{+}_{\rm eff,\Sigma_{\rm CB}}$",
+        marker=">",
     )
 
     C_Ebin, C_Obin = get_corr_CB(
         "48x24x24x24b7.62", "-0.77", "-1.1", "source_N100_sink_N0", "OV32"
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma^\ast_{\rm CB}}$", marker="s",
+        C_Ebin,
+        0,
+        24,
+        1,
+        r"$am^{+}_{\rm eff,\Sigma^\ast_{\rm CB}}$",
+        marker="s",
     )
 
     C_non_proj = np.loadtxt("raw_data/C_non_proj.txt")
     # C_non_proj = np.load('output_file/C_48x24x24x24b7.62mf0.77mas1.1_Chimera_OV_gi_gi_re_APE0.4N50_sm0.1_N100_N0_s1.npy')
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_non_proj, 0, 24, 1, r"$am_{{\rm eff,CB},\mu\nu}$", marker="h",
+        C_non_proj,
+        0,
+        24,
+        1,
+        r"$am_{{\rm eff,CB},\mu\nu}$",
+        marker="h",
     )
 
     plt.ylim(0.7, 1.2)
@@ -261,7 +296,9 @@ def main():
         C_Ebin, C_Obin = get_corr_CB(
             "60x48x48x48b8.0", "-0.6", "-0.81", "source_N100_sink_N0", ch
         )
-        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch])
+        M_tmp = extract.Analysis_Mass_eff_simple(
+            C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch]
+        )
 
     plt.ylabel(r"$am_{\rm{eff,CB}}(t)$")
     plt.xlabel(r"$t/a$")
@@ -278,7 +315,9 @@ def main():
         C_Ebin, C_Obin = get_corr_CB(
             "60x48x48x48b8.0", "-0.69", "-0.81", "source_N50_sink_N0", ch
         )
-        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch])
+        M_tmp = extract.Analysis_Mass_eff_simple(
+            C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch]
+        )
 
     plt.ylabel(r"$am_{\rm{eff,CB}}(t)$")
     plt.xlabel(r"$t/a$")
@@ -290,7 +329,9 @@ def main():
 
     ################################# Figure 3 ################################
 
-    fig, axes = plt.subplots(2, 3, num="Figure_3a-f", figsize=(7, 6.3), layout="constrained")
+    fig, axes = plt.subplots(
+        2, 3, num="Figure_3a-f", figsize=(7, 6.3), layout="constrained"
+    )
 
     # print(CB_mass[(CB_mass.beta==7.7) & (CB_mass.f_bare_mass==-0.7) & (CB_mass.as_bare_mass == -0.89)].m_Lambda.values[0])
 
@@ -949,7 +990,7 @@ def main():
 
     ################################# Figure 12 ################################
     fig, ax = plt.subplots(1, 2, num="Figure_12", figsize=(6, 4), layout="constrained")
-    
+
     ##########
     print("It may take a while...", end="")
     par_lam = optimal_AIC.get_pars(
@@ -987,7 +1028,6 @@ def main():
         ax[1], par_sigs, r"$\Sigma^\ast_{\rm CB}$", m_ps_cut[ind_sigs[1]], ind_sigs[0]
     )
     print("DONE!")
-    
 
     ax[0].set_xlabel(r"$\hat{m}_{\textrm{PS}}^2$")
     ax[0].set_ylabel(r"$\hat{m}_{\rm{CB}}$ at $\hat{m}_{\textrm{ps}}^2 = 0$")
@@ -1005,7 +1045,9 @@ def main():
     plt.close(fig)
 
     ################################# Figure 13 ################################
-    fig, ax = plt.subplots(1, 1, num="Figure_13", layout="constrained", figsize=(7, 5.2))
+    fig, ax = plt.subplots(
+        1, 1, num="Figure_13", layout="constrained", figsize=(7, 5.2)
+    )
 
     plot_line(ax, r"PS", 0, 0.04, 0.0, 0.0)
     plot_line(ax, r"V", -0.05, 0.04, 0.451, 0.013)
