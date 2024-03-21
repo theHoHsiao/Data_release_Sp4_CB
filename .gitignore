@@ -1,0 +1,9 @@
+figs/
+tabs/
+venv/
+CSVs/
+metadata/
+raw_data/
+tmp_data/
+__pycache__
+.DS_Store
