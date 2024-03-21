@@ -53,11 +53,7 @@ def X2_single_state_fit(C, ti, tf):
 
     def X2_boot_const(X):
         def Cf_vector(ti, tf):
-            V = np.zeros(tf - ti)
-            for time in range(tf - ti):
-                V[time] = C[N, time + ti] - func(time + ti, a, E)
-
-            return V
+            return C[N, ti:tf] - func(np.arange(ti, tf), a, E)
 
         (a, E) = X
 
@@ -67,11 +63,7 @@ def X2_single_state_fit(C, ti, tf):
 
     def nor_X2(a, E1):
         def Cf_vector_nor(ti, tf):
-            V = np.zeros(tf - ti)
-            for time in range(tf - ti):
-                V[time] = C[N, time + ti] - func(time + ti, a, E1)
-
-            return V
+            return C[N, ti:tf] - func(np.arange(ti, tf), a, E1)
 
         V = np.mat(Cf_vector_nor(ti, tf))
 
@@ -119,11 +111,7 @@ def X2_single_exp_fit(C, ti, tf):
 
     def X2_boot_const(X):
         def Cf_vector(ti, tf):
-            V = np.zeros(tf - ti)
-            for time in range(tf - ti):
-                V[time] = C[N, time + ti] - func(time + ti, a, E)
-
-            return V
+            return C[N, ti:tf] - func(np.arange(ti, tf), a, E)
 
         (a, E) = X
 
@@ -133,11 +121,7 @@ def X2_single_exp_fit(C, ti, tf):
 
     def nor_X2(a, E1):
         def Cf_vector_nor(ti, tf):
-            V = np.zeros(tf - ti)
-            for time in range(tf - ti):
-                V[time] = C[N, time + ti] - func(time + ti, a, E1)
-
-            return V
+            return C[N, ti:tf] - func(np.arange(ti, tf), a, E1)
 
         V = np.mat(Cf_vector_nor(ti, tf))
 
@@ -197,11 +181,7 @@ def cross_check_fit(X, Y):
 
     def X2_boot_const(pars):
         def Cf_vector():
-            V = np.zeros(size)
-            for i in range(size):
-                V[i] = Y[i, N] - func(X[i, N], a, b, c)
-
-            return V
+            return Y[:, N] - func(X[:, N], a, b, c)
 
         (a, b, c) = pars
 
@@ -211,11 +191,7 @@ def cross_check_fit(X, Y):
 
     def nor_X2(a, b, c):
         def Cf_vector_nor():
-            V = np.zeros(size)
-            for i in range(size):
-                V[i] = Y[i, -1] - func(X[i, -1], a, b, c)
-
-            return V
+            return Y[:, -1] - func(X[:, -1], a, b, c)
 
         V = np.mat(Cf_vector_nor())
 
@@ -278,36 +254,8 @@ def baryon_M4(X1, X2, LAT_A, Y):
 
     def X2_boot_const(pars):
         def Cf_vector():
-            V = np.zeros(size)
-            for i in range(size):
-                V[i] = Y[i, N] - func(
-                    (X1[i, N], X2[i, N], LAT_A[i, N]),
-                    M_CB,
-                    F2,
-                    A2,
-                    L1,
-                    F3,
-                    A3,
-                    L2F,
-                    L2A,
-                    F4,
-                    A4,
-                    C4,
-                )
-
-            return V
-
-        (M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4, A4, C4) = pars
-
-        V = np.mat(Cf_vector())
-
-        return V * M_I * V.T
-
-    def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4, A4, C4):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func(
-                (X1[i, -1], X2[i, -1], LAT_A[i, -1]),
+            return Y[:, N] - func(
+                (X1[:, N], X2[:, N], LAT_A[:, N]),
                 M_CB,
                 F2,
                 A2,
@@ -321,6 +269,27 @@ def baryon_M4(X1, X2, LAT_A, Y):
                 C4,
             )
 
+        (M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4, A4, C4) = pars
+
+        V = np.mat(Cf_vector())
+
+        return V * M_I * V.T
+
+    def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4, A4, C4):
+        V = Y[:, -1] - func(
+            (X1[:, -1], X2[:, -1], LAT_A[:, -1]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            F4,
+            A4,
+            C4,
+        )
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
@@ -393,41 +362,35 @@ def baryon_MC4(X1, X2, LAT_A, Y):
     def X2_boot_const(pars):
         (M_CB, F2, A2, L1, F3, A3, L2F, L2A, C4) = pars
 
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, N] - func(
-                (X1[i, N], X2[i, N], LAT_A[i, N]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                C4,
-            )
-
+        V = Y[:, N] - func(
+            (X1[:, N], X2[:, N], LAT_A[:, N]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            C4,
+        )
         V = np.mat(V)
 
         return V * M_I * V.T
 
     def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A, C4):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func(
-                (X1[i, -1], X2[i, -1], LAT_A[i, -1]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                C4,
-            )
-
+        V = Y[:, -1] - func(
+            (X1[:, -1], X2[:, -1], LAT_A[:, -1]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            C4,
+        )
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
@@ -496,41 +459,35 @@ def baryon_MA4(X1, X2, LAT_A, Y):
     def X2_boot_const(pars):
         (M_CB, F2, A2, L1, F3, A3, L2F, L2A, A4) = pars
 
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, N] - func(
-                (X1[i, N], X2[i, N], LAT_A[i, N]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                A4,
-            )
-
+        V = Y[:, N] - func(
+            (X1[:, N], X2[:, N], LAT_A[:, N]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            A4,
+        )
         V = np.mat(V)
 
         return V * M_I * V.T
 
     def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A, A4):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func(
-                (X1[i, -1], X2[i, -1], LAT_A[i, -1]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                A4,
-            )
-
+        V = Y[:, -1] - func(
+            (X1[:, -1], X2[:, -1], LAT_A[:, -1]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            A4,
+        )
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
@@ -599,10 +556,8 @@ def baryon_MF4(X1, X2, LAT_A, Y):
     def X2_boot_const(pars):
         (M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4) = pars
 
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, N] - func(
-                (X1[i, N], X2[i, N], LAT_A[i, N]),
+        V = Y[:, N] - func(
+                (X1[:, N], X2[:, N], LAT_A[:, N]),
                 M_CB,
                 F2,
                 A2,
@@ -613,27 +568,23 @@ def baryon_MF4(X1, X2, LAT_A, Y):
                 L2A,
                 F4,
             )
-
         V = np.mat(V)
 
         return V * M_I * V.T
 
     def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A, F4):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func(
-                (X1[i, -1], X2[i, -1], LAT_A[i, -1]),
-                M_CB,
-                F2,
-                A2,
-                L1,
-                F3,
-                A3,
-                L2F,
-                L2A,
-                F4,
-            )
-
+        V = Y[:, -1] - func(
+            (X1[:, -1], X2[:, -1], LAT_A[:, -1]),
+            M_CB,
+            F2,
+            A2,
+            L1,
+            F3,
+            A3,
+            L2F,
+            L2A,
+            F4,
+        )
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
@@ -701,23 +652,17 @@ def baryon_M3(X1, X2, LAT_A, Y):
     def X2_boot_const(pars):
         (M_CB, F2, A2, L1, F3, A3, L2F, L2A) = pars
 
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, N] - func(
-                (X1[i, N], X2[i, N], LAT_A[i, N]), M_CB, F2, A2, L1, F3, A3, L2F, L2A
-            )
-
+        V = Y[:, N] - func(
+            (X1[:, N], X2[:, N], LAT_A[:, N]), M_CB, F2, A2, L1, F3, A3, L2F, L2A
+        )
         V = np.mat(V)
 
         return V * M_I * V.T
 
     def nor_X2(M_CB, F2, A2, L1, F3, A3, L2F, L2A):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func(
-                (X1[i, -1], X2[i, -1], LAT_A[i, -1]), M_CB, F2, A2, L1, F3, A3, L2F, L2A
-            )
-
+        V = Y[:, -1] - func(
+            (X1[:, -1], X2[:, -1], LAT_A[:, -1]), M_CB, F2, A2, L1, F3, A3, L2F, L2A
+        )
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
@@ -769,9 +714,7 @@ def baryon_M2(X1, X2, LAT_A, Y):
 
     def X2_boot_const(pars):
         def Cf_vector():
-            V = np.zeros(size)
-            for i in range(size):
-                V[i] = Y[i, N] - func((X1[i, N], X2[i, N], LAT_A[i, N]), a, b, c, d)
+            V = Y[:, N] - func((X1[:, N], X2[:, N], LAT_A[:, N]), a, b, c, d)
 
             return V
 
@@ -782,10 +725,7 @@ def baryon_M2(X1, X2, LAT_A, Y):
         return V * M_I * V.T
 
     def nor_X2(a, b, c, d):
-        V = np.zeros(size)
-        for i in range(size):
-            V[i] = Y[i, -1] - func((X1[i, -1], X2[i, -1], LAT_A[i, -1]), a, b, c, d)
-
+        V = Y[:, -1] - func((X1[:, -1], X2[:, -1], LAT_A[:, -1]), a, b, c, d)
         V = np.mat(V)
 
         chisqr = (V * M_I * V.T)[0, 0]
