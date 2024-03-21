@@ -20,7 +20,7 @@ TABS := $(foreach tab, 1 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19, tabs/table_$
 .PHONY: venv all clean analyze_data remove_tmp
 
 # Default target
-all: analyze_data remove_tmp
+all: analyze_data
 
 # Virtual environment setup
 
