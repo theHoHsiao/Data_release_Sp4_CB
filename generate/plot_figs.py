@@ -12,6 +12,13 @@ import bootstrap
 import optimal_AIC
 
 
+markers = {
+    "OV12": "o",
+    "OV32": "p",
+    "OC": "*",
+}
+
+
 def get_corr_CB(ens, mf, mas, smear, channel):
     corr_e = raw_data[
         "chimera/"
@@ -91,6 +98,24 @@ def main():
     ansatz = ["M2", "M3", "MF4", "MA4", "MC4"]
 
     betas = CB_mass.beta.values
+
+    def beta_legend(fig, ax):
+        legend_handles = []
+        for beta in sorted(set(betas)):
+            legend_handles.append(
+                ax.errorbar(
+                    [np.nan],
+                    [np.nan],
+                    yerr=[np.nan],
+                    marker=beta_MRK(beta),
+                    linestyle="",
+                    color="k",
+                    alpha=0.7,
+                )[0]
+            )
+            legend_handles[-1].set_label(f"${beta}$")
+        fig.legend(handles=legend_handles, loc="outside upper center", ncols=5, title=r"$\beta$")
+
     f_bare_mass = CB_mass.f_bare_mass.values
     as_bare_mass = CB_mass.as_bare_mass.values
 
@@ -99,8 +124,6 @@ def main():
     mps = np.zeros(Ndata)
     MKS = np.zeros(Ndata, dtype=str)
     w0s = np.zeros(Ndata)
-
-    
 
     for i in range(Ndata):
         mPS[i] = F_meson[
@@ -148,7 +171,7 @@ def main():
     mpsxw0_sqr = (mps * w0s) ** 2
 
     ################################# Figure 1a ################################
-    fig = plt.figure("Figure_1")
+    fig = plt.figure("Figure_1", figsize=(2.25, 2.25), layout="constrained")
 
     corr_e = -raw_data[
         "chimera/48x24x24x24b7.62/mf-0.77/mas-1.1/source_N100_sink_N0/Chimera_OC_even_re/correlators"
@@ -159,20 +182,20 @@ def main():
 
     C_even = bootstrap.Correlator_resample(corr_e)
     C_odd = bootstrap.Correlator_resample(corr_o)
-    lnc = extract.Analysis_lnC(C_even, 0, 48, r"even")
-    lnc = extract.Analysis_lnC(C_odd, 0, 48, r"odd")
+    lnc = extract.Analysis_lnC(C_even, 0, 48, r"even", marker="8")
+    lnc = extract.Analysis_lnC(C_odd, 0, 48, r"odd", marker="v")
 
     plt.ylabel(r"$\rm{log}[C_{\Lambda_{\rm CB}}(t)]$")
     plt.xlabel(r"$t/a$")
     plt.xticks([0, 12, 24, 36, 48], ["0", "12", "24", "36", "48"])
     plt.legend()
-    plt.tight_layout()
-    plt.savefig("figs/MCB_eolnc.pdf")
+    fig.savefig("figs/MCB_eolnc.pdf")
+    plt.close(fig)
 
-    next(extract.marker)
-    next(extract.marker)
+    next(extract.markers)
+    next(extract.markers)
     ################################# Figure 1b ################################
-    fig = plt.figure("Figure_1b")
+    fig = plt.figure("Figure_1b", figsize=(2.25, 2.25), layout="constrained")
     extract.sperater.reset()
 
     C_Ebin, C_Obin = extract.bin_proj_Baryon(corr_e, -corr_o)
@@ -181,13 +204,13 @@ def main():
     C_og = bootstrap.Correlator_resample(corr_e - corr_o)
 
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Lambda_{\rm CB}}$"
+        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Lambda_{\rm CB}}$", marker="+",
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Obin, 0, 17, 1, r"$am^{-}_{\rm eff,\Lambda_{\rm CB}}$"
+        C_Obin, 0, 17, 1, r"$am^{-}_{\rm eff,\Lambda_{\rm CB}}$", marker="x",
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_og, 0, 24, 1, r"$am_{\rm eff,\Lambda_{\rm CB}}$"
+        C_og, 0, 24, 1, r"$am_{\rm eff,\Lambda_{\rm CB}}$", marker=markers["OC"],
     )
 
     plt.ylim(0.6, 1.6)
@@ -195,31 +218,31 @@ def main():
     plt.xlabel(r"$t/a$")
     plt.ylabel(r"effective mass")
     plt.legend()
-    plt.tight_layout()
-    plt.savefig("figs/MCB_eo.pdf", transparent=True)
+    fig.savefig("figs/MCB_eo.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 1b ################################
-    fig = plt.figure("Figure_1c")
+    fig = plt.figure("Figure_1c", figsize=(2.25, 2.25), layout="constrained")
     extract.sperater.reset()
 
     C_Ebin, C_Obin = get_corr_CB(
         "48x24x24x24b7.62", "-0.77", "-1.1", "source_N100_sink_N0", "OV12"
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma_{\rm CB}}$"
+        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma_{\rm CB}}$", marker=">",
     )
 
     C_Ebin, C_Obin = get_corr_CB(
         "48x24x24x24b7.62", "-0.77", "-1.1", "source_N100_sink_N0", "OV32"
     )
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma^\ast_{\rm CB}}$"
+        C_Ebin, 0, 24, 1, r"$am^{+}_{\rm eff,\Sigma^\ast_{\rm CB}}$", marker="s",
     )
 
     C_non_proj = np.loadtxt("raw_data/C_non_proj.txt")
     # C_non_proj = np.load('output_file/C_48x24x24x24b7.62mf0.77mas1.1_Chimera_OV_gi_gi_re_APE0.4N50_sm0.1_N100_N0_s1.npy')
     M_tmp = extract.Analysis_Mass_eff_simple(
-        C_non_proj, 0, 24, 1, r"$am_{{\rm eff,CB},\mu\nu}$"
+        C_non_proj, 0, 24, 1, r"$am_{{\rm eff,CB},\mu\nu}$", marker="h",
     )
 
     plt.ylim(0.7, 1.2)
@@ -228,46 +251,46 @@ def main():
     plt.xlabel(r"$t/a$")
     plt.xticks([6, 12, 18, 24], ["6", "12", "18", "24"])
     plt.legend(loc="upper right")
-    plt.tight_layout()
-    plt.savefig("figs/MCB_spin.pdf", transparent=True)
+    fig.savefig("figs/MCB_spin.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 2a ################################
-    fig = plt.figure("Figure_2a")
+    fig = plt.figure("Figure_2a", figsize=(3.5, 2.5), layout="constrained")
 
     for ch in ["OC", "OV12", "OV32"]:
         C_Ebin, C_Obin = get_corr_CB(
             "60x48x48x48b8.0", "-0.6", "-0.81", "source_N100_sink_N0", ch
         )
-        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch))
+        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch])
 
     plt.ylabel(r"$am_{\rm{eff,CB}}(t)$")
     plt.xlabel(r"$t/a$")
     plt.ylim(0.92, 1.04)
     plt.xlim(10, 35)
-    plt.legend(loc=1)
-    plt.tight_layout()
-    plt.savefig("figs/mh_h.pdf", transparent=True)
+    plt.legend(loc="upper left")
+    fig.savefig("figs/mh_h.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 2b ################################
-    fig = plt.figure("Figure_2b")
+    fig = plt.figure("Figure_2b", figsize=(3.5, 2.5), layout="constrained")
 
     for ch in ["OC", "OV12", "OV32"]:
         C_Ebin, C_Obin = get_corr_CB(
             "60x48x48x48b8.0", "-0.69", "-0.81", "source_N50_sink_N0", ch
         )
-        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch))
+        M_tmp = extract.Analysis_Mass_eff_simple(C_Ebin, 0, 35, 1, LB_channel(ch), marker=markers[ch])
 
     plt.ylabel(r"$am_{\rm{eff,CB}}(t)$")
     plt.xlabel(r"$t/a$")
     plt.ylim(0.7, 1)
     plt.xlim(10, 35)
-    plt.legend(loc=1)
-    plt.tight_layout()
-    plt.savefig("figs/mh_l.pdf", transparent=True)
+    plt.legend(loc="upper left")
+    fig.savefig("figs/mh_l.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 3 ################################
 
-    fig, ax = plt.subplots(2, 3, num="Figure_3a-f")
+    fig, axes = plt.subplots(2, 3, num="Figure_3a-f", figsize=(7, 6.3), layout="constrained")
 
     # print(CB_mass[(CB_mass.beta==7.7) & (CB_mass.f_bare_mass==-0.7) & (CB_mass.as_bare_mass == -0.89)].m_Lambda.values[0])
 
@@ -278,7 +301,7 @@ def main():
         MKS,
         mapper_f.to_rgba(mPSxw0_sqr),
     ):
-        graph = ax[0][0].errorbar(
+        graph = axes[0][0].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
@@ -289,7 +312,7 @@ def main():
         MKS,
         mapper_as.to_rgba(mpsxw0_sqr),
     ):
-        graph = ax[1][0].errorbar(
+        graph = axes[1][0].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
@@ -300,7 +323,7 @@ def main():
         MKS,
         mapper_f.to_rgba(mPSxw0_sqr),
     ):
-        graph = ax[0][1].errorbar(
+        graph = axes[0][1].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
@@ -311,7 +334,7 @@ def main():
         MKS,
         mapper_as.to_rgba(mpsxw0_sqr),
     ):
-        graph = ax[1][1].errorbar(
+        graph = axes[1][1].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
@@ -322,7 +345,7 @@ def main():
         MKS,
         mapper_f.to_rgba(mPSxw0_sqr),
     ):
-        graph = ax[0][2].errorbar(
+        graph = axes[0][2].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
@@ -333,32 +356,32 @@ def main():
         MKS,
         mapper_as.to_rgba(mpsxw0_sqr),
     ):
-        graph = ax[1][2].errorbar(
+        graph = axes[1][2].errorbar(
             x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
         )
 
-    for i in range(2):
-        ax[i][0].set_ylabel(r"$\hat{m}_{\Lambda_{\rm CB}}$")
-        ax[i][1].set_ylabel(r"$\hat{m}_{\Sigma_{\rm CB}}$")
-        ax[i][2].set_ylabel(r"$\hat{m}_{\Sigma^\ast_{\rm CB}}$")
+    for ax_row in axes:
+        ax_row[0].set_ylabel(r"$\hat{m}_{\Lambda_{\rm CB}}$")
+        ax_row[1].set_ylabel(r"$\hat{m}_{\Sigma_{\rm CB}}$")
+        ax_row[2].set_ylabel(r"$\hat{m}_{\Sigma^\ast_{\rm CB}}$")
 
-        for j in range(3):
-            ax[0][j].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    for ax in axes[0]:
+        ax.set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+        fig.colorbar(mapper_as, ax=ax, label=r"$\hat{m}_{\rm ps}^2$")
+        ax.set_ylim(0.9, 2.25)
 
-            ax[1][j].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    for ax in axes[1]:
+        ax.set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+        ax.set_xlim(0, 4)
+        fig.colorbar(mapper_f, ax=ax, label=r"$\hat{m}_{\rm PS}^2$")
 
-            ax[0][j].set_ylim(0.9, 2.25)
-            ax[1][j].set_xlim(0, 4)
-
-    for j in range(3):
-        fig.colorbar(mapper_as, ax=ax[0][j], label=r"$\hat{m}_{\rm ps}^2$")
-        fig.colorbar(mapper_f, ax=ax[1][j], label=r"$\hat{m}_{\rm PS}^2$")
-
-    fig.tight_layout()
-    plt.savefig("figs/m_mps.pdf", transparent=True)
+    beta_legend(fig, axes[0][0])
+    fig.savefig("figs/m_mps.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 4 ################################
-    fig = plt.figure("Figure_4")
+    plt.rcParams["font.size"] = 14
+    fig = plt.figure("Figure_4", figsize=(7, 5))
 
     ax = fig.add_subplot(111, projection="3d")
 
@@ -378,16 +401,32 @@ def main():
             alpha=0.6,
         )
 
+    for beta in set(betas):
+        ax.errorbar(
+            [np.nan],
+            [np.nan],
+            [np.nan],
+            zerr=[np.nan],
+            marker="none",
+            ls="none",
+            color=beta_color(beta),
+            label=f"${beta}$",
+            capsize=5,
+        )
+
     ax.view_init(12, -45)
-    ax.set_xlabel(r"$\hat{m}_{\rm ps}^2$", labelpad=40)
-    ax.set_ylabel(r"$\hat{m}_{\rm PS}^2$", labelpad=40)
-    ax.set_zlabel(r"$\hat{m}_{\Lambda_{\rm CB}}$", labelpad=10)
+    ax.set_xlabel(r"$\hat{m}_{\rm ps}^2$", labelpad=10, fontsize=14)
+    ax.set_ylabel(r"$\hat{m}_{\rm PS}^2$", labelpad=10, fontsize=14)
+    ax.set_zlabel(r"$\hat{m}_{\Lambda_{\rm CB}}$", labelpad=5, fontsize=14)
     ax.set_zlim(0.5, 2.5)
-    plt.savefig("figs/m_3D.pdf", transparent=True)
+    ax.legend(loc="upper center", title=r"$\beta$", ncols=5, fontsize=12)
+    fig.tight_layout()
+    fig.savefig("figs/m_3D.pdf", transparent=True)
+    plt.rcParams["font.size"] = 8
 
     ################################# Figure 5 ################################
 
-    fig, ax = plt.subplots(1, 2, num="Figure_5")
+    fig, ax = plt.subplots(1, 2, num="Figure_5", figsize=(7, 3.2), layout="constrained")
 
     for x, y, err, mk, co in zip(
         mPSxw0_sqr,
@@ -413,12 +452,13 @@ def main():
     ax[1].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_as, ax=ax[0], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[1], label=r"$\hat{m}_{\rm PS}^2$")
-    fig.tight_layout()
-    plt.savefig("figs/mh_mps2.pdf", transparent=True)
+    beta_legend(fig, ax[0])
+    fig.savefig("figs/mh_mps2.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 6 ################################
 
-    fig, ax = plt.subplots(1, 2, num="Figure_6")
+    fig, ax = plt.subplots(1, 2, num="Figure_6", figsize=(7, 3.2), layout="constrained")
 
     for x, y, err, mk, co in zip(
         mPSxw0_sqr,
@@ -444,11 +484,12 @@ def main():
     ax[1].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_as, ax=ax[0], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[1], label=r"$\hat{m}_{\rm PS}^2$")
-    fig.tight_layout()
-    plt.savefig("figs/ss_mps2.pdf", transparent=True)
+    beta_legend(fig, ax[0])
+    fig.savefig("figs/ss_mps2.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 7 ################################
-    fig, ax = plt.subplots(3, 5, num="Figure_7")
+    fig, ax = plt.subplots(3, 5, num="Figure_7", figsize=(7, 6), layout="constrained")
 
     m0_lam, x2_lam, w_lam = get_AIC("Lambda")
 
@@ -503,11 +544,11 @@ def main():
 
     fig.supxlabel(r"$\hat{m}_{\rm PS,cut}$")
     fig.supylabel(r"$\hat{m}_{\rm ps,cut}$")
-    fig.tight_layout()
-    plt.savefig("figs/M_OC_AIC.pdf", transparent=True)
+    fig.savefig("figs/M_OC_AIC.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 8 ################################
-    fig, ax = plt.subplots(3, 5, num="Figure_8")
+    fig, ax = plt.subplots(3, 5, num="Figure_8", figsize=(7, 6), layout="constrained")
 
     for i in range(28):
         for j in range(12):
@@ -570,11 +611,11 @@ def main():
 
     fig.supxlabel(r"$\hat{m}_{\rm PS,cut}$")
     fig.supylabel(r"$\hat{m}_{\rm ps,cut}$")
-    fig.tight_layout()
-    plt.savefig("figs/M_OV12_AIC.pdf", transparent=True)
+    fig.savefig("figs/M_OV12_AIC.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 9 ################################
-    fig, ax = plt.subplots(3, 5, num="Figure_9")
+    fig, ax = plt.subplots(3, 5, num="Figure_9", figsize=(7, 6), layout="constrained")
 
     for i in range(28):
         for j in range(12):
@@ -637,16 +678,15 @@ def main():
 
     fig.supxlabel(r"$\hat{m}_{\rm PS,cut}$")
     fig.supylabel(r"$\hat{m}_{\rm ps,cut}$")
-    fig.tight_layout()
-    plt.savefig("figs/M_OV32_AIC.pdf", transparent=True)
+    fig.savefig("figs/M_OV32_AIC.pdf", transparent=True)
+    plt.close(fig)
 
     ind_lam = np.unravel_index(w_lam.argmax(), w_lam.shape)
     ind_sig = np.unravel_index(w_sig.argmax(), w_sig.shape)
     ind_sigs = np.unravel_index(w_sigs.argmax(), w_sigs.shape)
 
     ################################# Figure 10 ################################
-    rcParams["figure.figsize"] = [12, 9]
-    fig, ax = plt.subplots(3, 3, num="Figure_10")
+    fig, ax = plt.subplots(3, 3, num="Figure_10", figsize=(7, 5), layout="constrained")
 
     ind = [ind_lam, ind_sig, ind_sigs]
     hatches = ["/", "x", "\\", "|", "O"]
@@ -773,13 +813,13 @@ def main():
     handles, labels = fig.gca().get_legend_handles_labels()
 
     by_label = dict(zip(labels, handles))
-    fig.legend(by_label.values(), by_label.keys(), loc="lower center", ncol=6)
-    fig.tight_layout(rect=(0, 0.05, 1, 1), h_pad=0.5, w_pad=0.5)
-    plt.savefig("figs/fix_AS_check.pdf", transparent=True)
+    fig.legend(by_label.values(), by_label.keys(), loc="outside lower center", ncol=6)
+    fig.savefig("figs/fix_AS_check.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 11 ################################
 
-    fig, ax = plt.subplots(3, 3, num="Figure_11")
+    fig, ax = plt.subplots(3, 3, num="Figure_11", figsize=(7, 5), layout="constrained")
 
     parlb = [r"$\tilde{m}^\chi_{\rm CB}$", r"$\tilde{A}_2$", r"$\tilde{A}_3$"]
 
@@ -903,13 +943,12 @@ def main():
 
     handles, labels = fig.gca().get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
-    fig.legend(by_label.values(), by_label.keys(), loc="lower center", ncol=6)
-    fig.tight_layout(rect=(0, 0.05, 1, 1), h_pad=0.5, w_pad=0.5)
-    plt.savefig("figs/fix_F_check.pdf", transparent=True)
+    fig.legend(by_label.values(), by_label.keys(), loc="outside lower center", ncol=6)
+    fig.savefig("figs/fix_F_check.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 12 ################################
-    rcParams["figure.figsize"] = [12, 6.8]
-    fig, ax = plt.subplots(1, 2, num="Figure_12")
+    fig, ax = plt.subplots(1, 2, num="Figure_12", figsize=(6, 4), layout="constrained")
     
     ##########
     print("It may take a while...", end="")
@@ -960,14 +999,13 @@ def main():
     ax[1].set_ylim(0.75, 1.8)
     ax[1].set_xlim(0, 3.4)
 
-    fig.legend(loc="upper center", ncol=3, bbox_to_anchor=(0.5, 1))
-    # fig.tight_layout()
+    fig.legend(loc="outside upper center", ncol=3)
 
-    plt.savefig("figs/plot_FIT_massless.pdf", transparent=True)
+    fig.savefig("figs/plot_FIT_massless.pdf", transparent=True)
+    plt.close(fig)
 
     ################################# Figure 13 ################################
-    rcParams["figure.figsize"] = [12, 9]
-    fig, ax = plt.subplots(1, 1, num="Figure_13")
+    fig, ax = plt.subplots(1, 1, num="Figure_13", layout="constrained", figsize=(7, 5.2))
 
     plot_line(ax, r"PS", 0, 0.04, 0.0, 0.0)
     plot_line(ax, r"V", -0.05, 0.04, 0.451, 0.013)
@@ -1076,10 +1114,12 @@ def main():
     ax.set_xticks([])
     ax.legend(loc="upper left", bbox_to_anchor=(0.05, 0.95))
 
-    fig.tight_layout()
-    plt.savefig("figs/plot_quench_all_m0.pdf", transparent=True)
+    fig.savefig("figs/plot_quench_all_m0.pdf", transparent=True)
+    plt.close(fig)
 
-    plt.show()
+    if "show_3d" in sys.argv:
+        plt.show()
+
 
 if __name__ == "__main__":
     main()

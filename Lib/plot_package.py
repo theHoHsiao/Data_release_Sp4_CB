@@ -15,7 +15,7 @@ os.environ["PATH"] = (
 )
 
 
-scale = 1
+scale = 0.5
 W = 12 * scale
 r = 0.8
 
@@ -191,7 +191,7 @@ def plot_line_fixAS(ax, fit_tmp, ch, cutv, offset):
         y_up[i] = Yfit[-1, i] + y_err
         y_dn[i] = Yfit[-1, i] - y_err
 
-    ax.plot(x1**2, Yfit[-1], "--", alpha=0.6)
+    ax.plot(x1**2, Yfit[-1], "--", linewidth=0.75, alpha=0.6)
     ax.fill_between(
         x1**2, y_up, y_dn, alpha=0.4
     )  # , color=plt.gca().lines[-1].get_color(),  label=ch_lb(ch))
@@ -233,7 +233,7 @@ def plot_line_fixF(ax, fit_tmp, ch, cutv, offset):
         y_up[i] = Yfit[-1, i] + y_err
         y_dn[i] = Yfit[-1, i] - y_err
 
-    ax.plot(x2**2, Yfit[-1], "--", alpha=0.6)
+    ax.plot(x2**2, Yfit[-1], "--", linewidth=0.75, alpha=0.6)
     ax.fill_between(
         x2**2, y_up, y_dn, alpha=0.4, label=ch
     )  # color=plt.gca().lines[-1].get_color()

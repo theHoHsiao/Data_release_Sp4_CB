@@ -4,7 +4,7 @@ import numpy as np
 import itertools
 import matplotlib.pyplot as plt
 
-marker = itertools.cycle(("o", "v", "*", "s", "p", "x"))
+markers = itertools.cycle(("o", "v", "*", "s", "p", "x"))
 sperater = np.nditer(np.linspace(0, 0.5, 12))
 
 
@@ -73,7 +73,7 @@ def baryon_mass(C_tmp, TI, TF):
     return E_fit, E_fit_err, round(X2 / (TF - TI - 2), 2)
 
 
-def Analysis_lnC(C_resample, ti, tf, measurement):
+def Analysis_lnC(C_resample, ti, tf, measurement, marker=None):
     num_sample = np.shape(C_resample)[0]
     GLB_T = np.shape(C_resample)[1]
 
@@ -100,7 +100,7 @@ def Analysis_lnC(C_resample, ti, tf, measurement):
         mass_tmp,
         err_tmp,
         linestyle="",
-        marker=next(marker),
+        marker=marker if marker else next(markers),
         alpha=0.6,
         label=measurement,
     )
@@ -108,7 +108,7 @@ def Analysis_lnC(C_resample, ti, tf, measurement):
     return Mass_channel_tmp
 
 
-def Analysis_Mass_eff_simple(C_resample, ti, tf, dt, measurement):
+def Analysis_Mass_eff_simple(C_resample, ti, tf, dt, measurement, marker=None):
     num_sample = np.shape(C_resample)[0]
     GLB_T = np.shape(C_resample)[1]
 
@@ -136,7 +136,7 @@ def Analysis_Mass_eff_simple(C_resample, ti, tf, dt, measurement):
         mass_tmp,
         err_tmp,
         linestyle="",
-        marker=next(marker),
+        marker=marker if markers else next(markers),
         alpha=0.6,
         label=measurement,
     )
