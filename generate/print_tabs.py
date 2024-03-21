@@ -139,7 +139,7 @@ def tab_1():
         + "	& 2.8812(21)    \\\\ \n",
     ]
 
-    f = open("tabs/table_1.tex", "w")
+    f = open("tabs/table_2.tex", "w")
     for i in range(len(line)):
         f.write(line[i])
 
