@@ -30,6 +30,16 @@ def LB_channel(ch):
         "SigmaS": r"$\Sigma^\ast_{\rm CB}$",
     }.get(ch, ch)
 
+def print_abv(v):
+
+    if v > 0.005:
+        return str(round(v,2))
+
+    else:
+        tmp = "%e" % v
+        dig = tmp.split('e')[1]
+        return r'$\sim 10^{'+dig+'}$'
+
 
 def get_AIC(ch):
     string = []
@@ -72,7 +82,7 @@ def get_AIC(ch):
             + " & "
             + str(round(AICs[i, ind[0], ind[1]], 2))
             + " & "
-            + "%.2e" % w[i, ind[0], ind[1]]
+            + print_abv(w[i, ind[0], ind[1]])
         )
 
     return string, w
@@ -206,11 +216,14 @@ def tab_4_7():
             & (FIT_mass.Ansatz == ansatz[ind[ch][0]])
         )
         par_tmp = FIT_mass[opt].values[0][6:]
-        for p in range(int(par_tmp.size / 2 - 2)):
-            if np.isnan(par_tmp[2 * p]) or par_tmp[2 * p] == 0:
-                tmp_tab += " & -"
-            else:
-                tmp_tab += " & " + print_non_zero(par_tmp[2 * p], par_tmp[2 * p + 1])
+        for p in range(8):
+            tmp_tab += " & " + print_non_zero(par_tmp[2 * p], par_tmp[2 * p + 1])
+            
+        if ind[ch][0] ==1:
+            tmp_tab += " & -"
+        else:
+            tmp_tab += " & " + print_non_zero(par_tmp[20], par_tmp[21])
+            
 
         f.write(tmp_tab + "\n")
         tab_7.append(tmp_tab)
