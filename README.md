@@ -43,6 +43,11 @@ the most computationally parts of the analysis.
   (which takes around 600 core hours on an x86-64 cluster),
   download the file `FIT_mass.csv` from [the data release][dr]
   and place it into the `CSVs` directory.
+  To ensure that `make` does not try to recompute it,
+  use `touch` to set its modification date to be in the future;
+  for example,
+
+      touch -A 120000 CSVs/fit_mass.csv
 
 ## Running the analysis
 
