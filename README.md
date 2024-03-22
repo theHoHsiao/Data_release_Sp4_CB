@@ -54,4 +54,19 @@ run
 Plots and tables will be output in
 the `figs` and `tabs` directories respectively.
 
+## Reproducibility and reusability
+
+Some aspects of this analysis
+make use of `scipy.optimize.curve_fit` and `.minimize`;
+as such,
+results are not bitwise reproducible
+between different CPU architectures.
+
+The code included in this repository
+was written with
+the analysis of the specific dataset above in mind;
+as such,
+it may not readily generalise to other data
+without additional work.
+
 [dr]: https://doi.org/10.5281/zenodo.10819721
