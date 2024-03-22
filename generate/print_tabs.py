@@ -308,8 +308,8 @@ def print_amass(ENS, f):
                     + get_CB_mass(data_tmp, f_masses[j], as_masses[i])
                 )
 
-            print(string_tmp + "\\\\ \n", file=f)
-        print("\\hline \n", file=f)
+            print(string_tmp + "\\\\", file=f)
+        print("\\hline", file=f)
 
     return data_tmp
 
