@@ -59,6 +59,21 @@ run
 Plots and tables will be output in
 the `figs` and `tabs` directories respectively.
 
+### Viewing the 3D plot
+
+As 3D plots can be significantly easier to interpret
+if they can be interacted with,
+we provide a method to do this.
+After running the full analysis described above,
+the commands
+
+    source venv/bin/activate
+    python generate/plot_figs.py show_3d
+
+will regenerate all plots,
+and additionally display the 3D spectrum plot interactively,
+so that it may be panned, zoomed, and rotated.
+
 ## Reproducibility and reusability
 
 Some aspects of this analysis
