@@ -20,7 +20,7 @@ def find_non_zero(x):
 
 def print_non_zero(v, err):
     dig = find_non_zero(err) + 2
-    return str(v)[0 : dig + 2] + "(" + str(err)[dig : dig + 2] + ")"
+    return str(v)[0 : dig + 2] + "(" + f"{err:.16f}"[dig : dig + 2] + ")"
 
 
 def LB_channel(ch):
@@ -38,7 +38,7 @@ def print_abv(v):
     else:
         tmp = "%e" % v
         dig = tmp.split("e")[1]
-        return r"$\sim 10^{" + dig + "}$"
+        return r"$\sim 10^{" + str(int(dig)) + "}$"
 
 
 def get_AIC(ch):
@@ -125,12 +125,13 @@ def tab_1():
         plaq_boot = bootstrap.bootstrap_main(plaq)
 
         err = bootstrap.bootstrap_error(plaq_boot[:, 0], np.mean(a_tmp))
-
-        # print( np.mean(plaq_boot) - np.mean(a_tmp), err  )
+        
         str_out = print_non_zero(np.mean(plaq_boot), err)
+        
         plaq_str.append(str_out)
 
     line = [
+        "\\begin{tabular}{| c | c | c | c | c | c|}\\hline\\hline \n",
         "Ensemble & $\\beta$   & $N_t\\times N^3_s$ & $\left < P \\right >$  & $w_0/a$  \\\\ \\hline \n",
         "QB1	    & $7.62$    & $48\\times24^3$   & "
         + plaq_str[0]
@@ -146,7 +147,8 @@ def tab_1():
         + "	& 2.3149(12)    \\\\ \n",
         "QB5	    & $8.2$     & $60\\times48^3$    & "
         + plaq_str[4]
-        + "	& 2.8812(21)    \\\\ \n",
+        + "	& 2.8812(21)    \\\\ \\hline \n",
+        "\\end{tabular}"
     ]
 
     f = open("tabs/table_2.tex", "w")
@@ -159,6 +161,7 @@ def tab_1():
 def tab_4_7():
     f = open("tabs/table_4.tex", "w")
 
+    f.write(" \\begin{tabular}{|c|C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}|} \n \\hline\\hline")
     f.write("& \\multicolumn{5}{c|}{$\\Lambda_{\\rm CB}$}   \\\\ \n")
     f.write(
         "Ansatz&  $\\hat{m}_{\\rm PS,cut}$ &  $\\hat{m}_{\\rm ps,cut}$ & $\\chi^2/N_{\\rm d.o.f.}$ &  AIC & $W$ \\\\ \hline \n"
@@ -166,10 +169,12 @@ def tab_4_7():
     string_tmp, w_lam = get_AIC("Lambda")
     for i in range(len(string_tmp)):
         f.write(string_tmp[i] + "  \\\\ \n")
+    f.write("\\hline \n \\end{tabular}")
     f.close()
 
     f = open("tabs/table_5.tex", "w")
-
+    
+    f.write(" \\begin{tabular}{|c|C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}|} \n \\hline\\hline")
     f.write(" & \\multicolumn{5}{c|}{$\\Sigma_{\\rm CB}$}  \\\\ \n")
     f.write(
         "Ansatz & $\\hat{m}_{\\rm PS,cut}$ &  $\\hat{m}_{\\rm ps,cut}$  & $\\chi^2/N_{\\rm d.o.f.}$ &  AIC & $W$ \\\\ \n\hline \n"
@@ -178,10 +183,12 @@ def tab_4_7():
     string_tmp, w_sig = get_AIC("Sigma")
     for i in range(len(string_tmp)):
         f.write(string_tmp[i] + "  \\\\ \n")
+    f.write("\\hline \n \\end{tabular}")
     f.close()
 
     f = open("tabs/table_6.tex", "w")
-
+    
+    f.write(" \\begin{tabular}{|c|C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}C{1.4cm}|} \n \\hline\\hline")
     f.write(" & \\multicolumn{5}{c|}{$\\Sigma^\\ast_{\\rm CB}$}  \\\\ \n")
     f.write(
         "Ansatz & $\\hat{m}_{\\rm PS,cut}$ &  $\\hat{m}_{\\rm ps,cut}$  & $\\chi^2/N_{\\rm d.o.f.}$ &  AIC & $W$ \\\\ \n\hline \n"
@@ -190,6 +197,7 @@ def tab_4_7():
     string_tmp, w_sigs = get_AIC("SigmaS")
     for i in range(len(string_tmp)):
         f.write(string_tmp[i] + "  \\\\ \n")
+    f.write("\\hline \n \\end{tabular}")
 
     f.close()
 
@@ -202,6 +210,8 @@ def tab_4_7():
 
     tab_7 = []
     f = open("tabs/table_7.tex", "w")
+
+    f.write("\\begin{tabular}{| C{1cm}  | C{1cm}   ||c  |c  |c  |c  |c  |c  |c |c  |c |} \n \\hline\\hline \n")
     f.write(
         "CB & Ansatz &$\\hat{m}_{\\rm CB}^\chi $ & $ F_2  $ 	&  $A_2 $   &  $L_1 $  & $F_3 $  &   $A_3 $  & $L_{2F} $  &   $L_{2A}$ & $C_4$ \\\\ \n \hline \n"
     )
@@ -223,8 +233,11 @@ def tab_4_7():
         else:
             tmp_tab += " & " + print_non_zero(par_tmp[20], par_tmp[21])
 
-        f.write(tmp_tab + "\n")
+        f.write(tmp_tab + "\\\\ \\hline \n ")
         tab_7.append(tmp_tab)
+
+    f.write("\\end{tabular} \n")
+    f.close()
 
 
 def get_F_mesons(ENS, bare_mass):
@@ -316,6 +329,8 @@ def print_amass(ENS, f):
 
 def print_meta_F():
     f = open("tabs/table_13.tex", "w")
+
+    f.write("\\begin{tabular}{ | c| c | c  | c c c c| c c c  c|} \n \\hline\\hline \n")
     f.write(
         "& 	& &     \\multicolumn{4}{c|}{PS}   &   \\multicolumn{4}{c|}{V}  \\\\ \n"
     )
@@ -357,13 +372,16 @@ def print_meta_F():
             string_tmp += " & " + str(data_ens.values[v, b + 16])
 
             f.write(string_tmp + " \\\\ \n")
-        f.write("\\hline")
+        f.write("\\hline \n")
 
+    f.write("\\end{tabular}")
     f.close()
 
 
 def print_meta_AS():
     f = open("tabs/table_14.tex", "w")
+
+    f.write("\\begin{tabular}{ | c| c | c  | c c c c| c c c  c|} \n \\hline\\hline \n")
     f.write(
         "& 	& &     \\multicolumn{4}{c|}{ps}   &   \\multicolumn{4}{c|}{v}  \\\\ \n"
     )
@@ -378,7 +396,7 @@ def print_meta_AS():
         data_ens = AS_meson[AS_meson.ENS == ens].sort_values(
             by="as_bare_mass", ascending=False
         )
-        f.write("\multirow{" + str(data_ens.shape[0]) + "}{*}{" + ens + "}")
+        f.write("\\multirow{" + str(data_ens.shape[0]) + "}{*}{" + ens + "}")
         for v in range(data_ens.shape[0]):
             string_tmp = ""
             for a in range(4):
@@ -405,8 +423,9 @@ def print_meta_AS():
             string_tmp += " & " + str(data_ens.values[v, b + 16])
 
             f.write(string_tmp + " \\\\ \n")
-        f.write("\\hline")
+        f.write("\\hline \n")
 
+    f.write("\\end{tabular}")
     f.close()
 
 
@@ -519,12 +538,15 @@ def main():
     for i in range(5):
         f = open(f"tabs/table_{8+i}.tex", "w")
 
-        f.write(
-            "$am_0^{(f)}$ &  $am_0^{(as)}$ & $am_{\\rm PS}$	& $m_{\\rm PS} /  m_{\\rm V}$ & $am_{\\rm ps}$"
-            + "& $m_{\\rm ps} / m_{\\rm v}$ & $am_{\\Lambda_{\\rm CB}}$      & $am_{\\Sigma_{\\rm CB}}$     & $am_{\\Sigma^\\star_{\\rm CB}}$\\\\ \n \\hline \n"
-        )
+        f.write("\\begin{tabular}{| c  c || c  | c | c | c | c| c | c| } \n")
+        f.write("\\hline\\hline \n")
+        f.write("$am_0^{(f)}$ &  $am_0^{(as)}$ &")
+        f.write("$am_{\\rm PS}$	& $m_{\\rm PS} /  m_{\\rm V}$ & \n")
+        f.write("$am_{\\rm ps}$	& $m_{\\rm ps} / m_{\\rm v}$ & \n")
+        f.write("$am_{\\Lambda_{\\rm CB}}$ & $am_{\\Sigma_{\\rm CB}}$ & $am_{\\Sigma^\\star_{\\rm CB}}$ \\\\ \\hline \n")
 
         print_amass("QB" + str(i + 1), f)
+        f.write("\\end{tabular} \n")
 
         f.close()
 
@@ -534,6 +556,8 @@ def main():
 
     for i in range(5):
         f = open(f"tabs/table_{15+i}.tex", "w")
+
+        f.write("\\begin{tabular}{ | c c | c c | c c c c | c c c c| c c c c|} \n  \\hline\\hline \n")
 
         f.write(
             "& 	&  &  & \\multicolumn{4}{c|}{$\\Lambda_{\\rm CB}$}  &   "
@@ -548,6 +572,8 @@ def main():
         )
 
         print_meta_CB("QB" + str(i + 1), f)
+
+        f.write("\\end{tabular} \n")
 
         f.close()
 
