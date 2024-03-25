@@ -9,6 +9,7 @@ It makes use of data from the corresponding [data release on Zenodo][dr].
 
 - Python 3.11
 - GNU Make
+- LaTeX
 
 ## Setup
 
