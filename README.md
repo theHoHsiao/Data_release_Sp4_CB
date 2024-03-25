@@ -81,6 +81,15 @@ make use of `scipy.optimize.curve_fit` and `.minimize`;
 as such,
 results are not bitwise reproducible
 between different CPU architectures.
+Additionally,
+some aspects
+(most notably `analysis/analysis_AIC.py`)
+are,
+for reasons we do not fully understand,
+slightly non-deterministic even on the same hardware,
+giving results that differ in the 10th significant figure or beyond.
+This is well beyond the precision we consider in our analysis,
+and does not affect our conclusions.
 
 The code included in this repository
 was written with
