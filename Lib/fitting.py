@@ -80,7 +80,7 @@ def X2_single_state_fit(C, ti, tf):
     print("one-state fitting time region ", ti, "to", tf - 1, ": ", end="")
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-8)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         E1.append(res.x[1])
         a1.append(res.x[0])
@@ -138,7 +138,7 @@ def X2_single_exp_fit(C, ti, tf):
     print("A*m*exp(-mt) fitting time region ", ti, "to", tf - 1, ": ", end="")
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-8)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         E1.append(res.x[1])
         a1.append(res.x[0])
@@ -202,7 +202,7 @@ def cross_check_fit(X, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -299,7 +299,7 @@ def baryon_M4(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -400,7 +400,7 @@ def baryon_MC4(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -497,7 +497,7 @@ def baryon_MA4(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -594,7 +594,7 @@ def baryon_MF4(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -672,7 +672,7 @@ def baryon_M3(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-10)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
@@ -735,7 +735,7 @@ def baryon_M2(X1, X2, LAT_A, Y):
     fit_val = np.zeros(shape=(num_pars, num_sample))
 
     for N in range(num_sample):
-        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=10**-8)
+        res = minimize(X2_boot_const, x0, method="Nelder-Mead", tol=1e-16)
 
         for n_pars in range(num_pars):
             fit_val[n_pars, N] = res.x[n_pars]
