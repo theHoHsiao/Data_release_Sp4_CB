@@ -99,6 +99,14 @@ def main():
 
     betas = CB_mass.beta.values
 
+    def export_legend(legend, filename="legend.pdf", expand=[-5,-10,5,5]):
+        fig  = legend.figure
+        fig.canvas.draw()
+        bbox  = legend.get_window_extent()
+        bbox = bbox.from_extents(*(bbox.extents + np.array(expand)))
+        bbox = bbox.transformed(fig.dpi_scale_trans.inverted())
+        fig.savefig(filename, dpi="figure", bbox_inches=bbox)
+
     def beta_legend(fig, ax):
         legend_handles = []
         for beta in sorted(set(betas)):
@@ -119,7 +127,7 @@ def main():
             loc="outside upper center",
             ncols=5,
             title=r"$\beta$",
-        )
+        )        
 
     f_bare_mass = CB_mass.f_bare_mass.values
     as_bare_mass = CB_mass.as_bare_mass.values
@@ -233,7 +241,7 @@ def main():
         marker=markers["OC"],
     )
 
-    plt.ylim(0.6, 1.6)
+    plt.ylim(0.6, 2)
     plt.xlim(0, 24)
     plt.xlabel(r"$t/a$")
     plt.ylabel(r"effective mass")
@@ -329,95 +337,147 @@ def main():
 
     ################################# Figure 3 ################################
 
-    fig, axes = plt.subplots(
-        2, 3, num="Figure_3a-f", figsize=(7, 6.3), layout="constrained"
+    fig, axes = plt.subplots( num="Figure_3a", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mPSxw0_sqr,
+        CB_mass.m_Lambda.values * w0s,
+        CB_mass.m_Lambda_error.values,
+        MKS,
+        mapper_as.to_rgba(mpsxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+    axes.set_ylabel(r"$\hat{m}_{\Lambda_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    fig.colorbar(mapper_as, ax=axes, label=r"$\hat{m}_{\rm ps}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_lam_mf.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    fig, axes = plt.subplots( num="Figure_3d", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mpsxw0_sqr,
+        CB_mass.m_Lambda.values * w0s,
+        CB_mass.m_Lambda_error.values,
+        MKS,
+        mapper_f.to_rgba(mPSxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+        
+    axes.set_ylabel(r"$\hat{m}_{\Lambda_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_f, ax=axes, label=r"$\hat{m}_{\rm PS}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_lam_mas.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    #
+    fig, axes = plt.subplots( num="Figure_3b", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mPSxw0_sqr,
+        CB_mass.m_Sigma.values * w0s,
+        CB_mass.m_Sigma_error.values,
+        MKS,
+        mapper_as.to_rgba(mpsxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+        
+    axes.set_ylabel(r"$\hat{m}_{\Sigma_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    fig.colorbar(mapper_as, ax=axes, label=r"$\hat{m}_{\rm ps}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_sig_mf.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    fig, axes = plt.subplots( num="Figure_3e", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mpsxw0_sqr,
+        CB_mass.m_Sigma.values * w0s,
+        CB_mass.m_Sigma_error.values,
+        MKS,
+        mapper_f.to_rgba(mPSxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+    axes.set_ylabel(r"$\hat{m}_{\Sigma_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_f, ax=axes, label=r"$\hat{m}_{\rm PS}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_sig_mas.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    #
+    fig, axes = plt.subplots( num="Figure_3c", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mPSxw0_sqr,
+        CB_mass.m_SigmaS.values * w0s,
+        CB_mass.m_SigmaS_error.values,
+        MKS,
+        mapper_as.to_rgba(mpsxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+    axes.set_ylabel(r"$\hat{m}_{\Sigma^\ast_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    fig.colorbar(mapper_as, ax=axes, label=r"$\hat{m}_{\rm ps}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_sigs_mf.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    fig, axes = plt.subplots( num="Figure_3f", figsize=(2.25, 2.7), layout="constrained" )
+    for x, y, err, mk, co in zip(
+        mpsxw0_sqr,
+        CB_mass.m_SigmaS.values * w0s,
+        CB_mass.m_SigmaS_error.values,
+        MKS,
+        mapper_f.to_rgba(mPSxw0_sqr),
+    ):
+        graph = axes.errorbar(
+            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
+        )
+    axes.set_ylabel(r"$\hat{m}_{\Sigma^\ast_{\rm CB}}$")
+    axes.set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_f, ax=axes, label=r"$\hat{m}_{\rm PS}^2$")
+    axes.set_ylim(0.9, 2.25)
+    fig.savefig("figs/m_sigs_mas.pdf", transparent=True)
+    plt.close(fig)
+    #
+    #
+    #
+    fig, ax = plt.subplots()
+    legend_handles = []
+    for beta in sorted(set(betas)):
+        legend_handles.append(
+            ax.errorbar(
+                [np.nan],
+                [np.nan],
+                yerr=[np.nan],
+                marker=beta_MRK(beta),
+                linestyle="",
+                color="k",
+                alpha=0.7,
+                )[0]
+            )
+        legend_handles[-1].set_label(f"${beta}$")
+    legend = fig.legend(
+        handles=legend_handles,
+        loc="outside upper center",
+        ncols=5,
+        title=r"$\beta$",
     )
-
-    # print(CB_mass[(CB_mass.beta==7.7) & (CB_mass.f_bare_mass==-0.7) & (CB_mass.as_bare_mass == -0.89)].m_Lambda.values[0])
-
-    for x, y, err, mk, co in zip(
-        mPSxw0_sqr,
-        CB_mass.m_Lambda.values * w0s,
-        CB_mass.m_Lambda_error.values,
-        MKS,
-        mapper_f.to_rgba(mPSxw0_sqr),
-    ):
-        graph = axes[0][0].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for x, y, err, mk, co in zip(
-        mpsxw0_sqr,
-        CB_mass.m_Lambda.values * w0s,
-        CB_mass.m_Lambda_error.values,
-        MKS,
-        mapper_as.to_rgba(mpsxw0_sqr),
-    ):
-        graph = axes[1][0].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for x, y, err, mk, co in zip(
-        mPSxw0_sqr,
-        CB_mass.m_Sigma.values * w0s,
-        CB_mass.m_Sigma_error.values,
-        MKS,
-        mapper_f.to_rgba(mPSxw0_sqr),
-    ):
-        graph = axes[0][1].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for x, y, err, mk, co in zip(
-        mpsxw0_sqr,
-        CB_mass.m_Sigma.values * w0s,
-        CB_mass.m_Sigma_error.values,
-        MKS,
-        mapper_as.to_rgba(mpsxw0_sqr),
-    ):
-        graph = axes[1][1].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for x, y, err, mk, co in zip(
-        mPSxw0_sqr,
-        CB_mass.m_SigmaS.values * w0s,
-        CB_mass.m_SigmaS_error.values,
-        MKS,
-        mapper_f.to_rgba(mPSxw0_sqr),
-    ):
-        graph = axes[0][2].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for x, y, err, mk, co in zip(
-        mpsxw0_sqr,
-        CB_mass.m_SigmaS.values * w0s,
-        CB_mass.m_SigmaS_error.values,
-        MKS,
-        mapper_as.to_rgba(mpsxw0_sqr),
-    ):
-        graph = axes[1][2].errorbar(
-            x, y, err, marker=mk, linestyle="", color=co, alpha=0.7
-        )
-
-    for ax_row in axes:
-        ax_row[0].set_ylabel(r"$\hat{m}_{\Lambda_{\rm CB}}$")
-        ax_row[1].set_ylabel(r"$\hat{m}_{\Sigma_{\rm CB}}$")
-        ax_row[2].set_ylabel(r"$\hat{m}_{\Sigma^\ast_{\rm CB}}$")
-
-    for ax in axes[0]:
-        ax.set_xlabel(r"$\hat{m}_{\rm PS}^2$")
-        fig.colorbar(mapper_as, ax=ax, label=r"$\hat{m}_{\rm ps}^2$")
-        ax.set_ylim(0.9, 2.25)
-
-    for ax in axes[1]:
-        ax.set_xlabel(r"$\hat{m}_{\rm ps}^2$")
-        ax.set_xlim(0, 4)
-        fig.colorbar(mapper_f, ax=ax, label=r"$\hat{m}_{\rm PS}^2$")
-
-    beta_legend(fig, axes[0][0])
-    fig.savefig("figs/m_mps.pdf", transparent=True)
+    export_legend(legend, filename="figs/legend_black.pdf")
     plt.close(fig)
 
     ################################# Figure 4 ################################
@@ -442,7 +502,7 @@ def main():
             alpha=0.6,
         )
 
-    for beta in set(betas):
+    for beta in sorted(set(betas)):
         ax.errorbar(
             [np.nan],
             [np.nan],
@@ -462,7 +522,7 @@ def main():
     ax.set_zlim(0.5, 2.5)
     ax.legend(loc="upper center", title=r"$\beta$", ncols=5, fontsize=12)
     fig.tight_layout()
-    fig.savefig("figs/m_3D.pdf", transparent=True)
+    fig.savefig("figs/m_lam_3d.pdf", transparent=True)
     plt.rcParams["font.size"] = 8
 
     ################################# Figure 5 ################################
@@ -474,25 +534,25 @@ def main():
         CB_mass.R_Lambda_Sigma.values,
         CB_mass.R_Lambda_Sigma_error.values,
         MKS,
-        mapper_f.to_rgba(mPSxw0_sqr),
+        mapper_as.to_rgba(mpsxw0_sqr),
     ):
-        graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
+        graph = ax[1].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
     for x, y, err, mk, co in zip(
         mpsxw0_sqr,
         CB_mass.R_Lambda_Sigma.values,
         CB_mass.R_Lambda_Sigma_error.values,
         MKS,
-        mapper_as.to_rgba(mpsxw0_sqr),
+        mapper_f.to_rgba(mPSxw0_sqr),
     ):
-        graph = ax[1].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
+        graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
-    ax[0].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
     ax[1].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
-    ax[0].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
-    ax[1].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
-    fig.colorbar(mapper_as, ax=ax[0], label=r"$\hat{m}_{\rm ps}^2$")
-    fig.colorbar(mapper_f, ax=ax[1], label=r"$\hat{m}_{\rm PS}^2$")
+    ax[0].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
+    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_as , ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
     beta_legend(fig, ax[0])
     fig.savefig("figs/mh_mps2.pdf", transparent=True)
     plt.close(fig)
@@ -506,30 +566,31 @@ def main():
         CB_mass.R_Sigma_SigmaS.values,
         CB_mass.R_Sigma_SigmaS_error.values,
         MKS,
-        mapper_f.to_rgba(mPSxw0_sqr),
+        mapper_as.to_rgba(mpsxw0_sqr),
     ):
-        graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
+        graph = ax[1].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
     for x, y, err, mk, co in zip(
         mpsxw0_sqr,
         CB_mass.R_Sigma_SigmaS.values,
         CB_mass.R_Sigma_SigmaS_error.values,
         MKS,
-        mapper_as.to_rgba(mpsxw0_sqr),
+        mapper_f.to_rgba(mPSxw0_sqr),
     ):
-        graph = ax[1].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
+        graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
-    ax[0].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
     ax[1].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
-    ax[0].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
-    ax[1].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
-    fig.colorbar(mapper_as, ax=ax[0], label=r"$\hat{m}_{\rm ps}^2$")
-    fig.colorbar(mapper_f, ax=ax[1], label=r"$\hat{m}_{\rm PS}^2$")
+    ax[0].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
+    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_as, ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
+    fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
     beta_legend(fig, ax[0])
     fig.savefig("figs/ss_mps2.pdf", transparent=True)
     plt.close(fig)
 
     ################################# Figure 7 ################################
+    plt.rcParams["font.size"] = 10 
     fig, ax = plt.subplots(3, 5, num="Figure_7", figsize=(7, 6), layout="constrained")
 
     m0_lam, x2_lam, w_lam = get_AIC("Lambda")
@@ -727,6 +788,7 @@ def main():
     ind_sigs = np.unravel_index(w_sigs.argmax(), w_sigs.shape)
 
     ################################# Figure 10 ################################
+    plt.rcParams["font.size"] = 8
     fig, ax = plt.subplots(3, 3, num="Figure_10", figsize=(7, 5), layout="constrained")
 
     ind = [ind_lam, ind_sig, ind_sigs]
@@ -989,7 +1051,7 @@ def main():
     plt.close(fig)
 
     ################################# Figure 12 ################################
-    fig, ax = plt.subplots(1, 2, num="Figure_12", figsize=(6, 4), layout="constrained")
+    fig, ax = plt.subplots(1, 2, num="Figure_12", figsize=(7, 4), layout="constrained")
 
     ##########
     print("It may take a while...", end="")
@@ -1045,6 +1107,7 @@ def main():
     plt.close(fig)
 
     ################################# Figure 13 ################################
+    plt.rcParams["font.size"] = 11
     fig, ax = plt.subplots(
         1, 1, num="Figure_13", layout="constrained", figsize=(7, 5.2)
     )
