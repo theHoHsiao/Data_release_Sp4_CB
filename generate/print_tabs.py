@@ -64,6 +64,7 @@ def get_AIC(ch):
             ].chisqr.values
 
         AICs[ans] = x22D[ans] + 2 * par_ans[ans] + 2 * (Ndata - n_2D)
+        x22D[ans] = x22D[ans] / (n_2D - par_ans[ans] - 1)
 
     w = 0.5 * np.exp(-AICs) / np.sum(np.unique(0.5 * np.exp(-AICs)))
     ind = np.unravel_index(w.argmax(), w.shape)
