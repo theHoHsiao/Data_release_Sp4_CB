@@ -551,6 +551,11 @@ def main():
     ax[0].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
     ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
     ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    ax[0].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[1].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[0].set_xlim(0,4)
+    ax[1].set_xlim(0,1.2)
+    
     fig.colorbar(mapper_as , ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
     beta_legend(fig, ax[0])
@@ -583,6 +588,11 @@ def main():
     ax[0].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
     ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
     ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
+    ax[0].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[1].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[0].set_xlim(0,4)
+    ax[1].set_xlim(0,1.2)
+    
     fig.colorbar(mapper_as, ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
     beta_legend(fig, ax[0])
