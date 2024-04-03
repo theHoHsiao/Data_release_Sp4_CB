@@ -3,7 +3,7 @@
 This repository contains the code used to prepare the plots and results
 included in
 [Lattice investigations of the chimera baryon spectrum in the Sp(4) gauge theory[2311.14663]](https://arxiv.org/abs/2311.14663).
-It makes use of data from the corresponding [data release on Zenodo][dr].
+It uses data from the corresponding [data release on Zenodo][dr].
 
 ## Requirements
 
@@ -19,7 +19,7 @@ All required Python packages
 will be automatically installed into a Python virtual environment by `make`.
 This requires an internet connection.
 If you plan to run the workflow on a cluster node without internet access,
-first prepare the environment by running
+first, prepare the environment by running
 
     make venv
 
@@ -34,7 +34,7 @@ To run the full analysis end to end, two sets of data are required.
 
 For convenience,
 we also provide intermediary files to skip
-the most computationally parts of the analysis.
+the most computational parts of the analysis.
 
 - To avoid the step of collating the raw data into HDF5 format,
   download the file `data.h5` from [the data release][dr]
@@ -87,7 +87,7 @@ some aspects
 (most notably `analysis/analysis_AIC.py`)
 are,
 for reasons we do not fully understand,
-slightly non-deterministic even on the same hardware,
+slightly non-deterministic, even on the same hardware,
 giving results that differ in the 10th significant figure or beyond.
 This is well beyond the precision we consider in our analysis,
 and does not affect our conclusions.
