@@ -41,7 +41,7 @@ the most computational parts of the analysis.
   and place it into the `tmp_data` directory.
   In this case, `raw_data.zip` is not needed.
 - To skip the Akaike Information Criterion-based analysis
-  (which takes around 600 core hours on an x86-64 cluster),
+  (which takes around 300 core hours on an x86-64 cluster),
   download the file `FIT_mass.csv` from [the data release][dr]
   and place it into the `CSVs` directory.
   To ensure that `make` does not try to recompute it,
