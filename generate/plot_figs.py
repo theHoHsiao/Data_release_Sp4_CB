@@ -547,17 +547,17 @@ def main():
     ):
         graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
-    ax[1].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
-    ax[0].set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
-    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    for axis in ax:
+        axis.set_ylabel(r"$m_{\Lambda_{\rm CB}} / m_{\Sigma_{\rm CB}}$")
+        axis.axhline(1.0, lw=1.0, color="black")
+
     ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
-    ax[0].plot([0,5],[1,1], alpha=0.8, color='k')
-    ax[1].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
     ax[0].set_xlim(0,4)
     ax[1].set_xlim(0,1.2)
     
-    fig.colorbar(mapper_as , ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
+    fig.colorbar(mapper_as , ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     beta_legend(fig, ax[0])
     fig.savefig("figs/mh_mps2.pdf", transparent=True)
     plt.close(fig)
@@ -584,17 +584,17 @@ def main():
     ):
         graph = ax[0].errorbar(x, y, err, marker=mk, linestyle="", color=co, alpha=0.7)
 
-    ax[1].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
-    ax[0].set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
-    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
+    for axis in ax:
+        axis.set_ylabel(r"$m_{ \Sigma_{\rm CB} } / m_{\Sigma^\ast_{\rm CB}}$")
+        axis.axhline(1.0, lw=1.0, color="black")
+
     ax[0].set_xlabel(r"$\hat{m}_{\rm ps}^2$")
-    ax[0].plot([0,5],[1,1], alpha=0.8, color='k')
-    ax[1].plot([0,5],[1,1], alpha=0.8, color='k')
+    ax[1].set_xlabel(r"$\hat{m}_{\rm PS}^2$")
     ax[0].set_xlim(0,4)
     ax[1].set_xlim(0,1.2)
     
-    fig.colorbar(mapper_as, ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     fig.colorbar(mapper_f, ax=ax[0], label=r"$\hat{m}_{\rm PS}^2$")
+    fig.colorbar(mapper_as, ax=ax[1], label=r"$\hat{m}_{\rm ps}^2$")
     beta_legend(fig, ax[0])
     fig.savefig("figs/ss_mps2.pdf", transparent=True)
     plt.close(fig)
