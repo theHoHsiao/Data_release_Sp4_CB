@@ -4,10 +4,13 @@
 cff-version: 1.2.0
 title: >-
   Lattice investigations of the chimera baryon spectrum in
-  the Sp(4) gauge theory---Analysis code
+  the Sp(4) gauge theory---Code release
 message: >-
   If you use this software, please cite it using the
   metadata from this file.
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.10929539
 type: software
 authors:
   - given-names: Ho
